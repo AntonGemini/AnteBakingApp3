@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,24 +22,26 @@ import okhttp3.Response;
 
 public class NetworkProvider {
 
-    public String getRecipesJSON(URL url)
+    public static List<Recipe> getRecipesJSON(String url)
     {
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
 
+        Request request = new Request.Builder().url(url).build();
         String result = "";
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
+            return readRecipesArray(result);
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             Log.d("OKHTTP","Error connecting server");
         }
-        return result;
+        return null;
+
     }
 
-    public List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
+    public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
     {
         List<Recipe> recipes = new ArrayList<>();
         JsonReader reader = new JsonReader(new StringReader(jsonRecipes));
@@ -52,7 +55,7 @@ public class NetworkProvider {
         return recipes;
     }
 
-    private Recipe readRecipe(JsonReader reader) throws IOException
+    private static Recipe readRecipe(JsonReader reader) throws IOException
     {
         Recipe recipe = new Recipe();
         reader.beginObject();
@@ -66,10 +69,10 @@ public class NetworkProvider {
                 recipe.setName(reader.nextString());
             }
             else if (name.equals("ingredients")) {
-                recipe.setIngredients(getReaderIngredients(reader));
+                getReaderIngredients(reader,recipe);
             }
             else if (name.equals("steps")) {
-                recipe.setSteps(getReaderSteps(reader));
+                getReaderSteps(reader,recipe);
             }
             else if (reader.equals("servings")) {
                 recipe.setServings(reader.nextInt());
@@ -77,13 +80,89 @@ public class NetworkProvider {
             else if (reader.equals("image")) {
                 recipe.setImage(reader.nextString());
             }
+            else
+            {
+                reader.skipValue();
+            }
         }
         reader.endObject();
         return recipe;
 
     }
 
-    private List<Recipe.Ingredient>
+    private static void getReaderIngredients(JsonReader reader, Recipe recipe) throws IOException
+    {
+        reader.beginArray();
+        List<Recipe.Ingredient> ingredientList = new ArrayList<>();
+        while (reader.hasNext())
+        {
+            Recipe.Ingredient ingredient = recipe.new Ingredient();
+            reader.beginObject();
+            while (reader.hasNext())
+            {
+                String name = reader.nextName();
+                if (name.equals("quantity")){
+                    ingredient.setQuantity(reader.nextDouble());
+                }
+                else if (name.equals("measure")){
+                    ingredient.setMeasure(reader.nextString());
+                }
+                else if (name.equals("ingredient")){
+                    ingredient.setIngredient(reader.nextString());
+                }
+                else
+                {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            ingredientList.add(ingredient);
+        }
+        recipe.setIngredients(ingredientList);
+        reader.endArray();
+    }
+
+    private static void getReaderSteps(JsonReader reader, Recipe recipe) throws IOException
+    {
+        reader.beginArray();
+        List<Recipe.Step> stepList = new ArrayList<>();
+        while (reader.hasNext())
+        {
+            Recipe.Step step = recipe.new Step();
+            reader.beginObject();
+            while (reader.hasNext())
+            {
+                String name = reader.nextName();
+                if (name.equals("id")){
+                    step.setId(reader.nextInt());
+                }
+                else if (name.equals("shortDescription")){
+                    step.setShortDescription(reader.nextString());
+                }
+                else if (name.equals("description")){
+                    step.setDescription(reader.nextString());
+                }
+                else if (name.equals("videoURL")){
+                    step.setVideoURL(reader.nextString());
+                }
+                else if (name.equals("videoURL")){
+                    step.setVideoURL(reader.nextString());
+                }
+                else if (name.equals("thumbnailURL")){
+                    step.setThumbnailURL(reader.nextString());
+                }
+                else
+                {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            stepList.add(step);
+        }
+        recipe.setSteps(stepList);
+        reader.endArray();
+    }
+
 
 
 }

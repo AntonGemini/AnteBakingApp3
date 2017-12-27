@@ -38,8 +38,7 @@ public class Recipe {
 
     public void setIngredients(List<Ingredient> ingredients)
     {
-        this.ingredients.clear();
-        this.ingredients.addAll(ingredients);
+        this.ingredients = ingredients;
     }
 
     public List<Ingredient> getIngredients()
@@ -72,17 +71,17 @@ public class Recipe {
     }
 
 
-    protected class Ingredient{
-        private float quantity;
+    public class Ingredient{
+        private double quantity;
         private String measure;
         private String ingredient;
 
-        public void setQuantity(float quantity)
+        public void setQuantity(double quantity)
         {
             this.quantity = quantity;
         }
 
-        public float getQuantity()
+        public double getQuantity()
         {
             return quantity;
         }
@@ -105,7 +104,7 @@ public class Recipe {
         }
     }
 
-    protected class Step{
+    public class Step{
         private int id;
         private String shortDescription;
         private String description;
