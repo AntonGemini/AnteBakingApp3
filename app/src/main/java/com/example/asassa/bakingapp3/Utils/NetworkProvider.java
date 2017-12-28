@@ -74,10 +74,10 @@ public class NetworkProvider {
             else if (name.equals("steps")) {
                 getReaderSteps(reader,recipe);
             }
-            else if (reader.equals("servings")) {
+            else if (name.equals("servings")) {
                 recipe.setServings(reader.nextInt());
             }
-            else if (reader.equals("image")) {
+            else if (name.equals("image")) {
                 recipe.setImage(reader.nextString());
             }
             else
