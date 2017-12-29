@@ -1,8 +1,11 @@
 package com.example.asassa.bakingapp3;
 
-import android.content.AsyncTaskLoader;
+
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -16,25 +19,28 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks {
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     List<Recipe> mRecipes = null;
     Context mContext = null;
+    private static int LOADER_ID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        new RecipeRequest().execute();
+
+        //getLoaderManager().initLoader(LOADER_ID,null, this);
+        getSupportLoaderManager().initLoader(LOADER_ID,null, this);
+        //new RecipeRequest().execute();
 
     }
 
-
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-
-        return new android.support.v4.content.AsyncTaskLoader<List<Recipe>>(mContext) {
+    public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<List<Recipe>>(mContext) {
             @Override
             public List<Recipe> loadInBackground() {
                 List<Recipe> recipes = NetworkProvider.getRecipesJSON("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json");
@@ -44,14 +50,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Object data) {
-
+    public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
+        mRecipes = data;
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
+    public void onLoaderReset(Loader<List<Recipe>> loader) {
 
     }
+
 
     class RecipeRequest extends AsyncTask<Void,Void,List<Recipe>>
     {
