@@ -25,7 +25,6 @@ public class NetworkProvider {
     public static List<Recipe> getRecipesJSON(String url)
     {
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder().url(url).build();
         String result = "";
         try {
@@ -57,28 +56,29 @@ public class NetworkProvider {
 
     private static Recipe readRecipe(JsonReader reader) throws IOException
     {
-        Recipe recipe = new Recipe();
+        //Recipe recipe = new Recipe();
+        Recipe.Builder recipeBuilder = Recipe.builder();
         reader.beginObject();
         while(reader.hasNext())
         {
             String name = reader.nextName();
             if (name.equals("id")){
-                recipe.setId(reader.nextInt());
+                recipeBuilder.setId(reader.nextInt());
             }
             else if (name.equals("name")) {
-                recipe.setName(reader.nextString());
+                recipeBuilder.setName(reader.nextString());
             }
             else if (name.equals("ingredients")) {
-                getReaderIngredients(reader,recipe);
+                getReaderIngredients(reader,recipeBuilder);
             }
             else if (name.equals("steps")) {
-                getReaderSteps(reader,recipe);
+                getReaderSteps(reader,recipeBuilder);
             }
             else if (name.equals("servings")) {
-                recipe.setServings(reader.nextInt());
+                recipeBuilder.setServings(reader.nextInt());
             }
             else if (name.equals("image")) {
-                recipe.setImage(reader.nextString());
+                recipeBuilder.setImage(reader.nextString());
             }
             else
             {
@@ -86,29 +86,29 @@ public class NetworkProvider {
             }
         }
         reader.endObject();
-        return recipe;
+        return recipeBuilder.build();
 
     }
 
-    private static void getReaderIngredients(JsonReader reader, Recipe recipe) throws IOException
+    private static void getReaderIngredients(JsonReader reader, Recipe.Builder recipeBuilder) throws IOException
     {
         reader.beginArray();
-        List<Recipe.Ingredient> ingredientList = new ArrayList<>();
+        List<Ingredient> ingredientList = new ArrayList<>();
         while (reader.hasNext())
         {
-            Recipe.Ingredient ingredient = recipe.new Ingredient();
+            Ingredient.Builder ingredientBuilder = Ingredient.builder();
             reader.beginObject();
             while (reader.hasNext())
             {
                 String name = reader.nextName();
                 if (name.equals("quantity")){
-                    ingredient.setQuantity(reader.nextDouble());
+                    ingredientBuilder.setQuantity(reader.nextDouble());
                 }
                 else if (name.equals("measure")){
-                    ingredient.setMeasure(reader.nextString());
+                    ingredientBuilder.setMeasure(reader.nextString());
                 }
                 else if (name.equals("ingredient")){
-                    ingredient.setIngredient(reader.nextString());
+                    ingredientBuilder.setIngredient(reader.nextString());
                 }
                 else
                 {
@@ -116,40 +116,40 @@ public class NetworkProvider {
                 }
             }
             reader.endObject();
-            ingredientList.add(ingredient);
+            ingredientList.add(ingredientBuilder.build());
         }
-        recipe.setIngredients(ingredientList);
+        //recipe.setIngredients(ingredientList);
         reader.endArray();
     }
 
     private static void getReaderSteps(JsonReader reader, Recipe recipe) throws IOException
     {
         reader.beginArray();
-        List<Recipe.Step> stepList = new ArrayList<>();
+        List<Step> stepList = new ArrayList<>();
         while (reader.hasNext())
         {
-            Recipe.Step step = recipe.new Step();
+            Step.Builder stepBuilder = Step.builder();
             reader.beginObject();
             while (reader.hasNext())
             {
                 String name = reader.nextName();
                 if (name.equals("id")){
-                    step.setId(reader.nextInt());
+                    stepBuilder.setId(reader.nextInt());
                 }
                 else if (name.equals("shortDescription")){
-                    step.setShortDescription(reader.nextString());
+                    stepBuilder.setShortDescription(reader.nextString());
                 }
                 else if (name.equals("description")){
-                    step.setDescription(reader.nextString());
+                    stepBuilder.setDescription(reader.nextString());
                 }
                 else if (name.equals("videoURL")){
-                    step.setVideoURL(reader.nextString());
+                    stepBuilder.setVideoURL(reader.nextString());
                 }
                 else if (name.equals("videoURL")){
-                    step.setVideoURL(reader.nextString());
+                    stepBuilder.setVideoURL(reader.nextString());
                 }
                 else if (name.equals("thumbnailURL")){
-                    step.setThumbnailURL(reader.nextString());
+                    stepBuilder.setThumbnailURL(reader.nextString());
                 }
                 else
                 {
@@ -157,9 +157,9 @@ public class NetworkProvider {
                 }
             }
             reader.endObject();
-            stepList.add(step);
+            stepList.add(stepBuilder.build());
         }
-        recipe.setSteps(stepList);
+        //recipe.setSteps(stepList);
         reader.endArray();
     }
 
