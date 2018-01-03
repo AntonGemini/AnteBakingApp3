@@ -20,6 +20,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     Context mContext;
     List<Recipe> mRecipeList = null;
 
+    public interface OnRecipeClickListener
+    {
+        void onRecipeClick(int recipeId);
+    }
+
+    private OnRecipeClickListener recipeClickListener;
+
     public RecipesAdapter(Context context, List<Recipe> recipeList){
         mContext = context;
         mRecipeList = recipeList;
@@ -48,6 +55,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
         public RecipesHolder(View itemView) {
             super(itemView);
             recipeNameText = itemView.findViewById(R.id.recipe_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recipeClickListener.onRecipeClick(getAdapterPosition());
+                }
+            });
         }
     }
 

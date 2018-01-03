@@ -9,7 +9,8 @@ import com.google.auto.value.AutoValue;
  */
 
 @AutoValue
-abstract public class Step implements Parcelable{
+public abstract class Step implements Parcelable{
+
     abstract int id();
     abstract String shortDescription();
     abstract String description();

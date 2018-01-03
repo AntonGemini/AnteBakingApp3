@@ -69,10 +69,10 @@ public class NetworkProvider {
                 recipeBuilder.setName(reader.nextString());
             }
             else if (name.equals("ingredients")) {
-                getReaderIngredients(reader,recipeBuilder);
+                recipeBuilder.setIngredients(getReaderIngredients(reader));
             }
             else if (name.equals("steps")) {
-                getReaderSteps(reader,recipeBuilder);
+                recipeBuilder.setSteps(getReaderSteps(reader));
             }
             else if (name.equals("servings")) {
                 recipeBuilder.setServings(reader.nextInt());
@@ -90,7 +90,7 @@ public class NetworkProvider {
 
     }
 
-    private static void getReaderIngredients(JsonReader reader, Recipe.Builder recipeBuilder) throws IOException
+    private static List<Ingredient> getReaderIngredients(JsonReader reader) throws IOException
     {
         reader.beginArray();
         List<Ingredient> ingredientList = new ArrayList<>();
@@ -118,11 +118,11 @@ public class NetworkProvider {
             reader.endObject();
             ingredientList.add(ingredientBuilder.build());
         }
-        //recipe.setIngredients(ingredientList);
         reader.endArray();
+        return ingredientList;
     }
 
-    private static void getReaderSteps(JsonReader reader, Recipe recipe) throws IOException
+    private static List<Step> getReaderSteps(JsonReader reader) throws IOException
     {
         reader.beginArray();
         List<Step> stepList = new ArrayList<>();
@@ -161,6 +161,7 @@ public class NetworkProvider {
         }
         //recipe.setSteps(stepList);
         reader.endArray();
+        return stepList;
     }
 
 

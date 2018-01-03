@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Recipe>> {
+        implements LoaderManager.LoaderCallbacks<List<Recipe>>, RecipesAdapter.OnRecipeClickListener {
 
     List<Recipe> mRecipes = null;
     Context mContext = null;
@@ -100,5 +100,11 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(savedInstanceState);
         int visiblePosition = gridLayoutManager.findFirstVisibleItemPosition();
         savedInstanceState.putInt("firstVisible",visiblePosition);
+    }
+
+    @Override
+    public void onRecipeClick(int recipeId) {
+        mRecipes.get(recipeId);
+
     }
 }
