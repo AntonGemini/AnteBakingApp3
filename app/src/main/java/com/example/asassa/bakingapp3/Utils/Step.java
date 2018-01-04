@@ -11,15 +11,15 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class Step implements Parcelable{
 
-    abstract int id();
-    abstract String shortDescription();
-    abstract String description();
-    abstract String videoURL();
-    abstract String thumbnailURL();
+    public abstract int id();
+    public abstract String shortDescription();
+    public abstract String description();
+    public abstract String videoURL();
+    public abstract String thumbnailURL();
 
 
     @AutoValue.Builder
-    abstract static class Builder
+    public abstract static class Builder
     {
         abstract Builder setId(int value);
         abstract Builder setShortDescription(String value);
@@ -29,7 +29,7 @@ public abstract class Step implements Parcelable{
         abstract Step build();
     }
 
-    static Builder builder()
+    public static Builder builder()
     {
         return new AutoValue_Step.Builder();
     }

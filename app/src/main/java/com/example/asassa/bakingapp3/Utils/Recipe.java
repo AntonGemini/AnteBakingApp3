@@ -13,12 +13,12 @@ import java.util.List;
 @AutoValue
 public abstract class Recipe implements Parcelable {
 
-    abstract int id();
-    abstract String name();
-    abstract List<Ingredient> ingredients();
-    abstract List<Step> steps();
-    abstract int servings();
-    abstract String image();
+    public abstract int id();
+    public abstract String name();
+    public abstract List<Ingredient> ingredients();
+    public abstract List<Step> steps();
+    public abstract int servings();
+    public abstract String image();
 
     @AutoValue.Builder
     abstract static class Builder

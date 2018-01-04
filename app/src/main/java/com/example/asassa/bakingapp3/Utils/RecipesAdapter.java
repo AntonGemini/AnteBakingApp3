@@ -19,6 +19,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
 
     Context mContext;
     List<Recipe> mRecipeList = null;
+    Recipe recipe1;
+
 
     public interface OnRecipeClickListener
     {
@@ -30,6 +32,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     public RecipesAdapter(Context context, List<Recipe> recipeList){
         mContext = context;
         mRecipeList = recipeList;
+        recipeClickListener = (OnRecipeClickListener)context;
     }
 
     @Override
@@ -43,6 +46,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     public void onBindViewHolder(RecipesAdapter.RecipesHolder holder, int position) {
         Recipe recipe = mRecipeList.get(position);
         holder.recipeNameText.setText(recipe.name());
+
+
     }
 
     @Override
@@ -58,7 +63,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    recipeClickListener.onRecipeClick(getAdapterPosition());
+                    int position = getAdapterPosition();
+                    recipeClickListener.onRecipeClick(position);
                 }
             });
         }

@@ -2,6 +2,7 @@ package com.example.asassa.bakingapp3;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import com.example.asassa.bakingapp3.Utils.NetworkProvider;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesAdapter;
+import com.example.asassa.bakingapp3.Utils.Step;
 
 import java.net.URI;
 import java.net.URL;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity
             firstVisible = savedInstanceState.getInt("firstVisible", 0);
         }
         getSupportLoaderManager().initLoader(LOADER_ID,null, this);
+        //Step.Builder builder = Step.builder();
     }
 
     @Override
@@ -84,15 +87,12 @@ public class MainActivity extends AppCompatActivity
         gridLayoutManager = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
         recipesRecycler.setLayoutManager(gridLayoutManager);
         recipesRecycler.setAdapter(adapter);
-
         //gridLayoutManager.findFirstVisibleItemPosition();
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-
     }
 
     @Override
@@ -104,7 +104,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRecipeClick(int recipeId) {
-        mRecipes.get(recipeId);
+        Recipe recipe = mRecipes.get(recipeId);
+        Intent intent = new Intent(this,StepsActivity.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
 
     }
 }

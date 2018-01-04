@@ -1,6 +1,7 @@
 package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,10 +18,12 @@ import java.util.List;
 public class StepListAdapter extends BaseAdapter {
 
     List<Step> mSteps = null;
+
     Context mContext;
 
-    public StepListAdapter(List<Step> steps)
+    public StepListAdapter(Context context, List<Step> steps)
     {
+        mContext = context;
         mSteps = steps;
     }
 
@@ -37,7 +40,7 @@ public class StepListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -46,11 +49,15 @@ public class StepListAdapter extends BaseAdapter {
         if (view == null)
         {
             textView = new TextView(mContext);
+
+            int dppx = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50, mContext.getResources().getDisplayMetrics());
+            textView.setMinHeight(dppx);
             Step step = mSteps.get(i);
-            
-
+            textView.setText(step.shortDescription());
         }
-
-        return null;
+        else {
+            textView = (TextView)view;
+        }
+        return textView;
     }
 }
