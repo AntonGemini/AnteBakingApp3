@@ -32,9 +32,13 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        /*try{
+        try{
+            onStepClickListener = (OnStepClickListener)context;
+        }
+        catch (Exception ex)
+        {
 
-        }*/
+        }
 
     }
 
