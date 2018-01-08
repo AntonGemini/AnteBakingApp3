@@ -8,23 +8,22 @@
         android:id="@+id/exo_details_video"
         android:layout_height="0dp"
         android:layout_width="0dp"
-        android:maxHeight="200dp"
-        app:layout_constraintBottom_toTopOf="@+id/gl_horizontal"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintHeight_max="250dp"
+        app:layout_constraintVertical_weight="5"
+        app:layout_constraintBottom_toTopOf="@+id/tv_step_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        ></com.google.android.exoplayer2.ui.SimpleExoPlayerView>
-    <android.support.constraint.Guideline
-        android:id="@+id/gl_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintRight_toRightOf="parent">
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+
     <TextView
         android:id="@+id/tv_step_description"
-        app:layout_constraintTop_toBottomOf="@+id/gl_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/exo_details_video"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_weight="1"
         android:layout_width="0dp"
-        android:layout_height="50dp" />
+        android:layout_height="0dp" />
 </android.support.constraint.ConstraintLayout>

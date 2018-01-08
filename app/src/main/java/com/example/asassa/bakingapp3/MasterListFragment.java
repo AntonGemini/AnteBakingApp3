@@ -10,10 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.Adapters.StepListAdapter;
+import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.Step;
+
+import java.util.List;
 
 /**
  * Created by ASassa on 03.01.2018.
@@ -26,7 +30,14 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
         void onStepClick(Step position);
     }
 
+    public interface OnIngredientsClickListener
+    {
+        void onIngerdientsClick(List<Ingredient> ingredients);
+    }
+
     private OnStepClickListener onStepClickListener;
+    private OnIngredientsClickListener onIngredienstClickListener;
+    private TextView textViewIngredients;
 
 
     @Override
@@ -34,6 +45,7 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
         super.onAttach(context);
         try{
             onStepClickListener = (OnStepClickListener)context;
+            onIngredienstClickListener = (OnIngredientsClickListener)context;
         }
         catch (Exception ex)
         {
@@ -59,6 +71,13 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
                     onStepClickListener.onStepClick(recipe.steps().get(i));
                 }
             });
+            textViewIngredients.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onIngredienstClickListener.onIngerdientsClick(recipe.ingredients());
+                }
+            });
+
         }
 
         return view;

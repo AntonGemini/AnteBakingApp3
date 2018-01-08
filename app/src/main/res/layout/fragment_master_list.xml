@@ -6,10 +6,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/bt_ingredients"
+        android:id="@+id/tv_ingredients"
         android:text="Ingredients"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+
         />
     <ListView
         android:layout_width="match_parent"

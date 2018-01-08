@@ -10,9 +10,9 @@ import com.google.auto.value.AutoValue;
 
 @AutoValue
 public abstract class Ingredient implements Parcelable{
-    abstract double quantity();
-    abstract String measure();
-    abstract String ingredient();
+    public abstract double quantity();
+    public abstract String measure();
+    public abstract String ingredient();
 
     @AutoValue.Builder
     abstract static class Builder{
