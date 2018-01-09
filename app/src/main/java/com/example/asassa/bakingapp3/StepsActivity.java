@@ -1,6 +1,7 @@
 package com.example.asassa.bakingapp3;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.Step;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StepsActivity extends AppCompatActivity implements MasterListFragment.OnStepClickListener,
@@ -56,17 +58,17 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
     @Override
     public void onIngerdientsClick(List<Ingredient> ingredients) {
 
-        /*if (mTwoPane)
+        if (mTwoPane)
         {
-            DetailsRecipeFragment fragment = new DetailsRecipeFragment();
-            fragment.setStepDetails(step);
+            IngredientFragment fragment = new IngredientFragment();
+            fragment.setIngredients(ingredients);
 
             getSupportFragmentManager().beginTransaction().replace(R.id.details_fragment,fragment).commit();
         }
         else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("step", step);
+            intent.putExtra("ingedients",new ArrayList(ingredients));
             startActivity(intent);
-        }*/
+        }
     }
 }

@@ -58,6 +58,7 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_master_list,container);
+        textViewIngredients = view.findViewById(R.id.tv_ingredients);
         Intent intent = getActivity().getIntent();
         if (intent!= null)
         {

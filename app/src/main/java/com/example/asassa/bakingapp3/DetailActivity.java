@@ -13,7 +13,14 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        DetailsRecipeFragment fragment = new DetailsRecipeFragment();
-        fragmentManager.beginTransaction().add(R.id.details_fragment,fragment).commit();
+        if (savedInstanceState == null) {
+            if (getIntent().getExtras().getParcelable("step") != null) {
+                DetailsRecipeFragment fragment = new DetailsRecipeFragment();
+                fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
+            } else if (getIntent().getExtras().getParcelableArrayList("ingedients") != null) {
+                IngredientFragment fragment = new IngredientFragment();
+                fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
+            }
+        }
     }
 }
