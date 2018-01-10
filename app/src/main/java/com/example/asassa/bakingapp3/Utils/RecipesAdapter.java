@@ -48,8 +48,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     public void onBindViewHolder(RecipesAdapter.RecipesHolder holder, int position) {
         Recipe recipe = mRecipeList.get(position);
         holder.recipeNameText.setText(recipe.name());
-        Picasso.with(mContext).load(recipe.image()).into(holder.recipeImageView);
-
+        String imgSrc = recipe.image();
+        if (!imgSrc.equals(""))
+        {
+            Picasso.with(mContext).load(imgSrc).into(holder.recipeImageView);
+        }
     }
 
     @Override

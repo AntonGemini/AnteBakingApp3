@@ -3,6 +3,9 @@ package com.example.asassa.bakingapp3.Utils;
 import android.util.JsonReader;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -42,6 +45,7 @@ public class NetworkProvider {
 
     public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
     {
+        //JSONObject jsonObject = JSONParser
         List<Recipe> recipes = new ArrayList<>();
         JsonReader reader = new JsonReader(new StringReader(jsonRecipes));
         reader.beginArray();
@@ -92,6 +96,7 @@ public class NetworkProvider {
 
     private static List<Ingredient> getReaderIngredients(JsonReader reader) throws IOException
     {
+        JSONArray
         reader.beginArray();
         List<Ingredient> ingredientList = new ArrayList<>();
         while (reader.hasNext())
@@ -124,6 +129,7 @@ public class NetworkProvider {
 
     private static List<Step> getReaderSteps(JsonReader reader) throws IOException
     {
+
         reader.beginArray();
         List<Step> stepList = new ArrayList<>();
         while (reader.hasNext())
@@ -163,6 +169,8 @@ public class NetworkProvider {
         reader.endArray();
         return stepList;
     }
+
+
 
 
 
