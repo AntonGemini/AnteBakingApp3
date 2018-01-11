@@ -3,6 +3,10 @@ package com.example.asassa.bakingapp3.Utils;
 import android.util.JsonReader;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +23,8 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+//import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
 
 /**
  * Created by ASassa on 25.12.2017.
@@ -33,6 +40,7 @@ public class NetworkProvider {
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
+            parseGsonRecipe(result);
             return readRecipesArray(result);
         }
         catch(Exception ex)
@@ -41,6 +49,14 @@ public class NetworkProvider {
         }
         return null;
 
+    }
+
+    public static void parseGsonRecipe(String json)
+    {
+        Gson gson = new Gson();
+        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
+        List<Recipe> recipes = gson.fromJson(json, recipeListType);
+        // /Gson gson = new GsonBuilder().registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory());
     }
 
     public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
@@ -96,7 +112,6 @@ public class NetworkProvider {
 
     private static List<Ingredient> getReaderIngredients(JsonReader reader) throws IOException
     {
-        JSONArray
         reader.beginArray();
         List<Ingredient> ingredientList = new ArrayList<>();
         while (reader.hasNext())
