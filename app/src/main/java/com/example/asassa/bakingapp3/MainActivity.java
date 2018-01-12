@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import com.example.asassa.bakingapp3.Utils.NetworkProvider;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesAdapter;
+import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 import com.example.asassa.bakingapp3.Utils.Step;
 
 import java.net.URI;
@@ -49,20 +50,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<List<Recipe>>(getBaseContext()) {
-
-            @Override
-            protected void onStartLoading() {
-                super.onStartLoading();
-                forceLoad();
-            }
-
-            @Override
-            public List<Recipe> loadInBackground() {
-                List<Recipe> recipes = NetworkProvider.getRecipesJSON("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json");
-                return recipes;
-            }
-        };
+        return new RecipesLoader(getBaseContext());
     }
 
     @Override

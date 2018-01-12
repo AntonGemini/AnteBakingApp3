@@ -7,23 +7,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.support.v4.content.Loader;
+import android.support.v4.app.LoaderManager;
+
+import com.example.asassa.bakingapp3.Utils.Recipe;
+import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The configuration screen for the {@link IngredientsWidget IngredientsWidget} AppWidget.
  */
-public class IngredientsWidgetConfigureActivity extends Activity {
+public class IngredientsWidgetConfigureActivity extends Activity implements LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     private static final String PREFS_NAME = "com.example.asassa.bakingapp3.IngredientsWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
     ListView mAppWidgetList;
+    List<Recipe> mRecipes;
+    RecyclerView mRecycleViewRecipes;
+
+
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = IngredientsWidgetConfigureActivity.this;
@@ -84,6 +95,7 @@ public class IngredientsWidgetConfigureActivity extends Activity {
         setContentView(R.layout.ingredients_widget_configure);
         mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         mAppWidgetList = findViewById(R.id.lv_widget_recipes);
+
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.
@@ -112,6 +124,27 @@ public class IngredientsWidgetConfigureActivity extends Activity {
         mAppWidgetList.setAdapter(simpleAdapter);
 
         mAppWidgetText.setText(loadTitlePref(IngredientsWidgetConfigureActivity.this, mAppWidgetId));
+    }
+
+
+    @Override
+    public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
+        return new RecipesLoader(getBaseContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
+        mRecipes = data;
+        mRecycleViewRecipes = findViewById(R.id.rv_widget_recipes);
+        ArrayAdapter<Recipe> simpleAdapter = new ArrayAdapter<Recipe>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, mRecipes);
+        mAppWidgetList.setAdapter(simpleAdapter);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Recipe>> loader) {
+
     }
 }
 

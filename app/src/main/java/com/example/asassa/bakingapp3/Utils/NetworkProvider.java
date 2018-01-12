@@ -38,8 +38,8 @@ public class NetworkProvider {
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
-            parseGson(result);
-            return readRecipesArray(result);
+            return parseGson(result);
+            //return readRecipesArray(result);
         }
         catch(Exception ex)
         {
@@ -49,15 +49,14 @@ public class NetworkProvider {
 
     }
 
-    public static void parseGson(String json)
+    public static List<Recipe> parseGson(String json)
     {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create())
                 .create();
         Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
         List<Recipe> recipes = gson.fromJson(json,type);
+        return recipes;
         //Store list recipes first time in shared preferences.
-
-
     }
 
 
