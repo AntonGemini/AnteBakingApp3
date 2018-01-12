@@ -24,8 +24,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-//import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
-
 /**
  * Created by ASassa on 25.12.2017.
  */
@@ -40,7 +38,7 @@ public class NetworkProvider {
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
-            parseGsonRecipe(result);
+            parseGson(result);
             return readRecipesArray(result);
         }
         catch(Exception ex)
@@ -51,13 +49,17 @@ public class NetworkProvider {
 
     }
 
-    public static void parseGsonRecipe(String json)
+    public static void parseGson(String json)
     {
-        Gson gson = new Gson();
-        Type recipeListType = new TypeToken<ArrayList<Recipe>>(){}.getType();
-        List<Recipe> recipes = gson.fromJson(json, recipeListType);
-        // /Gson gson = new GsonBuilder().registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory());
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create())
+                .create();
+        Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
+        List<Recipe> recipes = gson.fromJson(json,type);
+        //Store list recipes first time in shared preferences.
+
+
     }
+
 
     public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
     {
@@ -112,6 +114,7 @@ public class NetworkProvider {
 
     private static List<Ingredient> getReaderIngredients(JsonReader reader) throws IOException
     {
+        //JSONArray
         reader.beginArray();
         List<Ingredient> ingredientList = new ArrayList<>();
         while (reader.hasNext())

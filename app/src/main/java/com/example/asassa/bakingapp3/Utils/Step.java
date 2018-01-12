@@ -6,8 +6,6 @@ import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
-import java.util.List;
-
 /**
  * Created by sassa_000 on 02.01.2018.
  */
@@ -21,10 +19,12 @@ public abstract class Step implements Parcelable{
     public abstract String videoURL();
     public abstract String thumbnailURL();
 
+
     public static Step create(int id, String shortDescription, String description, String videoURL, String thumbnailURL)
     {
         return new AutoValue_Step(id, shortDescription, description, videoURL, thumbnailURL);
     }
+
 
     @AutoValue.Builder
     public abstract static class Builder
@@ -42,8 +42,7 @@ public abstract class Step implements Parcelable{
         return new AutoValue_Step.Builder();
     }
 
-    public static TypeAdapter<Step> typeAdapter(Gson gson)
-    {
+    public static TypeAdapter<Step> typeAdapter(Gson gson) {
         return new AutoValue_Step.GsonTypeAdapter(gson);
     }
 
