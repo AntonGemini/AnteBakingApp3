@@ -3,6 +3,8 @@ package com.example.asassa.bakingapp3.Utils;
 import android.os.Parcelable;
 
 import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 import java.util.List;
 
@@ -20,6 +22,11 @@ public abstract class Recipe implements Parcelable {
     public abstract int servings();
     public abstract String image();
 
+    public static Recipe create(int id, String name, List<Ingredient> ingredients, List<Step> steps, int servings, String image)
+    {
+        return new AutoValue_Recipe(id, name, ingredients, steps, servings, image);
+    }
+
     @AutoValue.Builder
     abstract static class Builder
     {
@@ -36,6 +43,10 @@ public abstract class Recipe implements Parcelable {
     static Builder builder()
     {
         return new AutoValue_Recipe.Builder();
+    }
+
+    public static TypeAdapter<Recipe> typeAdapter(Gson gson) {
+        return new AutoValue_Recipe.GsonTypeAdapter(gson);
     }
 
 }
