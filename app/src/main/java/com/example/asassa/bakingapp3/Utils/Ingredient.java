@@ -38,4 +38,8 @@ public abstract class Ingredient implements Parcelable{
         return new AutoValue_Ingredient.GsonTypeAdapter(gson);
     }
 
+    @Override
+    public String toString() {
+        return ingredient()+"\n" + quantity() + " " + measure();
+    }
 }

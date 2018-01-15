@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,7 @@ import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The configuration screen for the {@link IngredientsWidget IngredientsWidget} AppWidget.
@@ -32,7 +35,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Recipe>>, WidgetRecyclerAdapter.OnWidgetRecipeClick {
 
     private static final String PREFS_NAME = "com.example.asassa.bakingapp3.IngredientsWidget";
-    private static final String PREF_PREFIX_KEY = "appwidget_";
+    public static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
     RecyclerView mAppWidgetList;
@@ -50,6 +53,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             IngredientsWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
+
 
             // Make sure we pass back the original appWidgetId
             Intent resultValue = new Intent();
@@ -129,8 +133,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
     public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
         mRecipes = data;
         mAppWidgetList = findViewById(R.id.lv_widget_recipes);
-        /*RecyclerView.Adapter<Recipe> simpleAdapter = new ArrayAdapter<Recipe>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, mRecipes);*/
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext(),LinearLayoutManager.VERTICAL,false);
         mAppWidgetList.setLayoutManager(linearLayoutManager);
 
@@ -146,7 +149,25 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
 
     @Override
     public void OnRecipeClick(List<Ingredient> ingredients) {
+        saveWidgetList(mAppWidgetId,ingredients);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getBaseContext());
+        IngredientsWidget.updateAppWidget(getBaseContext(),appWidgetManager,mAppWidgetId);
 
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,mAppWidgetId);
+        setResult(RESULT_OK,resultIntent);
+        finish();
+    }
+
+    private void saveWidgetList(int mAppWidgetId, List<Ingredient> ingredients) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        Set<String> ingredientSet = new ArraySet();
+        for (Ingredient ingredient : ingredients)
+        {
+            ingredientSet.add(ingredient.toString());
+        }
+        //ingredients.
+        sharedPreferences.edit().putStringSet(PREF_PREFIX_KEY + " " + mAppWidgetId,ingredientSet).commit();
     }
 }
 
