@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +17,8 @@ import android.widget.ListView;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
 
+import com.example.asassa.bakingapp3.Adapters.WidgetRecyclerAdapter;
+import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 
@@ -24,15 +28,15 @@ import java.util.List;
 /**
  * The configuration screen for the {@link IngredientsWidget IngredientsWidget} AppWidget.
  */
-public class IngredientsWidgetConfigureActivity extends Activity implements LoaderManager.LoaderCallbacks<List<Recipe>> {
+public class IngredientsWidgetConfigureActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<List<Recipe>>, WidgetRecyclerAdapter.OnWidgetRecipeClick {
 
     private static final String PREFS_NAME = "com.example.asassa.bakingapp3.IngredientsWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
-    ListView mAppWidgetList;
+    RecyclerView mAppWidgetList;
     List<Recipe> mRecipes;
-    RecyclerView mRecycleViewRecipes;
 
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -94,7 +98,6 @@ public class IngredientsWidgetConfigureActivity extends Activity implements Load
 
         setContentView(R.layout.ingredients_widget_configure);
         mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
-        mAppWidgetList = findViewById(R.id.lv_widget_recipes);
 
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
@@ -112,18 +115,8 @@ public class IngredientsWidgetConfigureActivity extends Activity implements Load
             return;
         }
 
-        ArrayList<String> recipes = new ArrayList<String>();
-        recipes.add("rec1");
-        recipes.add("rec2");
-        recipes.add("rec3");
-        ContentResolver contentResolver = getContentResolver();
-
-
-        ArrayAdapter<String> simpleAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, recipes);
-        mAppWidgetList.setAdapter(simpleAdapter);
-
         mAppWidgetText.setText(loadTitlePref(IngredientsWidgetConfigureActivity.this, mAppWidgetId));
+        getSupportLoaderManager().initLoader(4,null,this);
     }
 
 
@@ -135,15 +128,24 @@ public class IngredientsWidgetConfigureActivity extends Activity implements Load
     @Override
     public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
         mRecipes = data;
-        mRecycleViewRecipes = findViewById(R.id.rv_widget_recipes);
-        ArrayAdapter<Recipe> simpleAdapter = new ArrayAdapter<Recipe>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, mRecipes);
-        mAppWidgetList.setAdapter(simpleAdapter);
+        mAppWidgetList = findViewById(R.id.lv_widget_recipes);
+        /*RecyclerView.Adapter<Recipe> simpleAdapter = new ArrayAdapter<Recipe>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, mRecipes);*/
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getBaseContext(),LinearLayoutManager.VERTICAL,false);
+        mAppWidgetList.setLayoutManager(linearLayoutManager);
+
+        WidgetRecyclerAdapter adapter = new WidgetRecyclerAdapter(getBaseContext(),data, this);
+        mAppWidgetList.setAdapter(adapter);
 
     }
 
     @Override
     public void onLoaderReset(Loader<List<Recipe>> loader) {
+
+    }
+
+    @Override
+    public void OnRecipeClick(List<Ingredient> ingredients) {
 
     }
 }
