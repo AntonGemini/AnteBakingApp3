@@ -17,6 +17,8 @@ import java.util.Set;
  */
 public class IngredientsWidget extends AppWidgetProvider {
 
+    public static int cnt = 0;
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
@@ -30,13 +32,20 @@ public class IngredientsWidget extends AppWidgetProvider {
 
         if (ingredients != null) {
             Intent intent = new Intent(context, IngredientWidgetService.class);
-            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+            //intent.setFlags()
+            //intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+            intent.setType(String.valueOf(cnt));
             intent.putExtra("lst", new ArrayList(ingredients));
-            views.setRemoteAdapter(R.id.lv_widget_ingredients, intent);
+            intent.putExtra("random",cnt);
+
+            views.setRemoteAdapter(R.id.lv_widget_ingredients,intent);
+
+            cnt++;
         }
 
-
         // Instruct the widget manager to update the widget
+        //appWidgetManager.updateAppWidget(appWidgetId, null);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.lv_widget_ingredients);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
