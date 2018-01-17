@@ -101,7 +101,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.ingredients_widget_configure);
-        mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
+        mAppWidgetText = findViewById(R.id.appwidget_text);
 
         findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 

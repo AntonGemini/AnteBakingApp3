@@ -61,7 +61,7 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
         if (mTwoPane)
         {
             IngredientFragment fragment = new IngredientFragment();
-            fragment.setIngredients(ingredients);
+            fragment.setIngredients(new ArrayList(ingredients));
 
             getSupportFragmentManager().beginTransaction().replace(R.id.details_fragment,fragment).commit();
         }
