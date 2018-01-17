@@ -14,6 +14,7 @@ import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Step;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
 public class IngredientFragment extends Fragment {
 
     ListView ingedientsView;
-    List<Ingredient> mIngredients;
+    ArrayList<Ingredient> mIngredients;
 
     @Nullable
     @Override
@@ -31,7 +32,11 @@ public class IngredientFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ingredient,container);
         ingedientsView = view.findViewById(R.id.lv_ingredients);
         Intent intent = getActivity().getIntent();
-        if (mIngredients == null && intent.getExtras().getParcelableArrayList("ingedients") != null)
+        if(savedInstanceState!= null)
+        {
+            mIngredients = savedInstanceState.getParcelableArrayList("ingredients");
+        }
+        else if (mIngredients == null && intent.getExtras().getParcelableArrayList("ingedients") != null)
         {
             mIngredients = intent.getExtras().getParcelableArrayList("ingedients");
         }
@@ -40,10 +45,14 @@ public class IngredientFragment extends Fragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public void setIngredients(List<Ingredient> ingredients)
+    public void setIngredients(ArrayList<Ingredient> ingredients)
     {
         mIngredients = ingredients;
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("ingredients",mIngredients);
+    }
 }
