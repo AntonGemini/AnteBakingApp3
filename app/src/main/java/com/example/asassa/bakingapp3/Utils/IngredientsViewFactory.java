@@ -1,9 +1,13 @@
 package com.example.asassa.bakingapp3.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.example.asassa.bakingapp3.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,10 +16,10 @@ import java.util.List;
 
 public class IngredientsViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    List<String> mIngredients;
+    ArrayList<String> mIngredients;
     Context mContext;
 
-    public IngredientsViewFactory(Context context, List<String> ingredients)
+    public IngredientsViewFactory(Context context, ArrayList<String> ingredients)
     {
         mContext = context;
         mIngredients = ingredients;
@@ -34,7 +38,7 @@ public class IngredientsViewFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public void onDestroy() {
-
+        mIngredients.clear();
     }
 
     @Override
@@ -44,8 +48,10 @@ public class IngredientsViewFactory implements RemoteViewsService.RemoteViewsFac
 
     @Override
     public RemoteViews getViewAt(int i) {
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(),android.R.layout.simple_list_item_1);
-        rv.setTextViewText(android.R.id.text1,mIngredients.get(i));
+        RemoteViews rv = new RemoteViews(mContext.getPackageName(),R.layout.widget_recyclerview_row);
+        rv.setTextViewText(R.id.tv_recipe_widget,mIngredients.get(i));
+        Intent fillInIntent = new Intent();
+        rv.setOnClickFillInIntent(R.id.tv_recipe_widget,fillInIntent);
         return rv;
     }
 

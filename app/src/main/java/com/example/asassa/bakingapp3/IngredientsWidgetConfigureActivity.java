@@ -23,6 +23,7 @@ import com.example.asassa.bakingapp3.Adapters.WidgetRecyclerAdapter;
 import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesLoader;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,8 +149,8 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
     }
 
     @Override
-    public void OnRecipeClick(List<Ingredient> ingredients) {
-        saveWidgetList(mAppWidgetId,ingredients);
+    public void OnRecipeClick(Recipe recipe) {
+        saveWidgetList(mAppWidgetId,recipe);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getBaseContext());
         IngredientsWidget.updateAppWidget(getBaseContext(),appWidgetManager,mAppWidgetId);
 
@@ -159,15 +160,13 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         finish();
     }
 
-    private void saveWidgetList(int mAppWidgetId, List<Ingredient> ingredients) {
+    private void saveWidgetList(int mAppWidgetId, Recipe recipe) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Set<String> ingredientSet = new ArraySet();
-        for (Ingredient ingredient : ingredients)
-        {
-            ingredientSet.add(ingredient.toString());
-        }
-        //ingredients.
-        sharedPreferences.edit().putStringSet(PREF_PREFIX_KEY + " " + mAppWidgetId,ingredientSet).commit();
+        Gson gson = new Gson();
+        String recipeJson = gson.toJson(recipe);
+
+
+        sharedPreferences.edit().putString(PREF_PREFIX_KEY + " " + mAppWidgetId,recipeJson).commit();
     }
 }
 

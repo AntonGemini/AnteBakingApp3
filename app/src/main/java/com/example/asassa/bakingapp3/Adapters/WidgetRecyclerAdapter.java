@@ -25,7 +25,7 @@ public class WidgetRecyclerAdapter extends RecyclerView.Adapter<WidgetRecyclerAd
 
     public interface OnWidgetRecipeClick
     {
-        void OnRecipeClick(List<Ingredient> ingredients);
+        void OnRecipeClick(Recipe recipe);
     }
 
     private OnWidgetRecipeClick onWidgetRecipeClick;
@@ -64,7 +64,7 @@ public class WidgetRecyclerAdapter extends RecyclerView.Adapter<WidgetRecyclerAd
             recipeText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onWidgetRecipeClick.OnRecipeClick(mRecipes.get(getAdapterPosition()).ingredients());
+                    onWidgetRecipeClick.OnRecipeClick(mRecipes.get(getAdapterPosition()));
                 }
             });
         }
