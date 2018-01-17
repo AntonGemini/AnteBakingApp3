@@ -3,6 +3,7 @@ package com.example.asassa.bakingapp3;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity
             firstVisible = savedInstanceState.getInt("firstVisible", 0);
         }
         getSupportLoaderManager().initLoader(LOADER_ID,null, this);
-        //Step.Builder builder = Step.builder();
+
     }
 
     @Override
@@ -72,7 +73,15 @@ public class MainActivity extends AppCompatActivity
     {
         recipesRecycler = (RecyclerView) findViewById(R.id.rv_recipes);
         adapter = new RecipesAdapter(this, recipes);
-        gridLayoutManager = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        }
+        else if (orientation == Configuration.ORIENTATION_LANDSCAPE)
+        {
+            gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+        }
         recipesRecycler.setLayoutManager(gridLayoutManager);
         recipesRecycler.setAdapter(adapter);
         //gridLayoutManager.findFirstVisibleItemPosition();
