@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.Utils.Step;
@@ -33,6 +34,8 @@ public class DetailsRecipeFragment extends Fragment {
     TextView tv;
     SimpleExoPlayerView exoPlayerView;
     SimpleExoPlayer mExoPlayer;
+    ImageView defaultImageView;
+    TextView textViewRecipe;
 
     @Nullable
     @Override
@@ -40,6 +43,9 @@ public class DetailsRecipeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_details_recipe,container,false);
         tv = view.findViewById(R.id.tv_step_description);
         exoPlayerView = view.findViewById(R.id.exo_details_video);
+        defaultImageView = view.findViewById(R.id.iv_default_step);
+        textViewRecipe = view.findViewById(R.id.tv_recipe_name);
+
         Intent intent = getActivity().getIntent();
         if (savedInstanceState != null)
         {
@@ -50,7 +56,13 @@ public class DetailsRecipeFragment extends Fragment {
         }
         String ts = mStep.description();
         tv.setText(ts);
-        intializePlayer(mStep.videoURL());
+        if (mStep.videoURL() != null && !mStep.videoURL().equals("")) {
+            intializePlayer(mStep.videoURL());
+        }
+        else
+        {
+            setDefaultImage(mStep.thumbnailURL());
+        }
         return view;
     }
 
@@ -67,6 +79,8 @@ public class DetailsRecipeFragment extends Fragment {
 
     public void intializePlayer(String videoUrl)
     {
+        exoPlayerView.setVisibility(View.VISIBLE);
+
         if (mExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
@@ -79,6 +93,16 @@ public class DetailsRecipeFragment extends Fragment {
         }
     }
 
+    private void setDefaultImage(String thumbnail)
+    {
+        exoPlayerView.setVisibility(View.INVISIBLE);
+        defaultImageView.setVisibility(View.VISIBLE);
+        if(!thumbnail.equals(""))
+        {
+            defaultImageView.setImageURI(Uri.parse(thumbnail));
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -87,9 +111,12 @@ public class DetailsRecipeFragment extends Fragment {
 
     public void releasePlayer()
     {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if (mExoPlayer != null)
+        {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
 }
