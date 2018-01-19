@@ -29,6 +29,7 @@ public class MainActivityInstrumentedTest {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+
     @Test
     public void gridViewTest()
     {

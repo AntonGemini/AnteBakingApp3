@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -16,6 +19,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
 
+import com.example.asassa.bakingapp3.Utils.ActivityIdlingResource;
 import com.example.asassa.bakingapp3.Utils.NetworkProvider;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesAdapter;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity
     private int firstVisible = 0;
     RecyclerView recipesRecycler;
 
+    ActivityIdlingResource mIdlingResource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
+        mIdlingResource.setIdleState(false);
         return new RecipesLoader(getBaseContext());
     }
 
@@ -62,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         {
             recipesRecycler.scrollToPosition(firstVisible);
         }
+        mIdlingResource.setIdleState(true);
     }
 
     @Override
@@ -105,6 +113,17 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this,StepsActivity.class);
         intent.putExtra("recipe", recipe);
         startActivity(intent);
-
     }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource()
+    {
+        if (mIdlingResource == null){
+            mIdlingResource = new ActivityIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+
 }
