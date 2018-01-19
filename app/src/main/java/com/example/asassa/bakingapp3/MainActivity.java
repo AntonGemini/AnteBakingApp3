@@ -57,7 +57,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
-        mIdlingResource.setIdleState(false);
+        if (mIdlingResource!= null) {
+            mIdlingResource.setIdleState(false);
+        }
+        else
+        {
+            mIdlingResource = new ActivityIdlingResource();
+            mIdlingResource.setIdleState(false);
+        }
         return new RecipesLoader(getBaseContext());
     }
 
@@ -69,7 +76,11 @@ public class MainActivity extends AppCompatActivity
         {
             recipesRecycler.scrollToPosition(firstVisible);
         }
-        mIdlingResource.setIdleState(true);
+
+        if(mIdlingResource != null){
+            mIdlingResource.setIdleState(true);
+        }
+
     }
 
     @Override

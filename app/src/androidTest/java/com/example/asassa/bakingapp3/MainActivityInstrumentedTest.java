@@ -1,10 +1,16 @@
 package com.example.asassa.bakingapp3;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 
 import com.example.asassa.bakingapp3.Utils.Recipe;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,16 +32,24 @@ import static org.hamcrest.Matchers.instanceOf;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentedTest {
 
+    private IdlingResource mIdlingResource;
+
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void registerIdle()
+    {
+        mIdlingResource = activityTestRule.getActivity().getIdlingResource();
+        Espresso.registerIdlingResources(mIdlingResource);
+    }
 
 
     @Test
     public void gridViewTest()
     {
-
-        onData(anything()).inAdapterView(withId(R.id.rv_recipes)).atPosition(0).perform(click());
-        //onView(withId(R.id.tv_recipe_name)).check(matches(withText("Nutella Pie")));
+        onView(ViewMatchers.withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        onView(withId(R.id.tv_recipe_name)).check(matches(withText("Nutella Pie")));
     }
 
 }
