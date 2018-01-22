@@ -2,12 +2,14 @@ package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.asassa.bakingapp3.R;
 import com.example.asassa.bakingapp3.Utils.Ingredient;
 
 import java.util.List;
@@ -47,21 +49,19 @@ public class IngredientsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        TextView ingredientView;
+        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.step_item,viewGroup,false);
+        TextView textView = rowView.findViewById(R.id.tv_step_name);
         if (view == null)
         {
-            ingredientView = new TextView(mContext);
-            int dppx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50, mContext.getResources().getDisplayMetrics());
-            ingredientView.setMinHeight(dppx);
-            ingredientView.setText(mIngredients.get(i).ingredient()+"\n");
-            ingredientView.append(mIngredients.get(i).quantity()+" ");
-            ingredientView.append(mIngredients.get(i).measure());
-
+            textView.setText(mIngredients.get(i).ingredient()+"\n");
+            textView.append(mIngredients.get(i).quantity()+" ");
+            textView.append(mIngredients.get(i).measure());
         }
         else
         {
-            ingredientView = (TextView)view;
+            rowView = view;
         }
-        return ingredientView;
+        return rowView;
     }
 }

@@ -5,8 +5,10 @@ import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 
 import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
@@ -25,6 +27,7 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
+
         Recipe recipe = null;
         if (savedInstanceState == null)
         {
@@ -46,7 +49,6 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
                 fragment.setStepDetails(recipe.steps().get(0));
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
-
             }
         }
     }
@@ -77,7 +79,6 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
         {
             IngredientFragment fragment = new IngredientFragment();
             fragment.setIngredients(new ArrayList(ingredients));
-
             getSupportFragmentManager().beginTransaction().replace(R.id.details_fragment,fragment).commit();
         }
         else {

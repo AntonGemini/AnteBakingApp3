@@ -29,7 +29,7 @@ public class IngredientFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ingredient,container);
+        View view = inflater.inflate(R.layout.fragment_ingredient,container,false);
         ingedientsView = view.findViewById(R.id.lv_ingredients);
         Intent intent = getActivity().getIntent();
         if(savedInstanceState!= null)
@@ -42,7 +42,7 @@ public class IngredientFragment extends Fragment {
         }
         IngredientsAdapter adapter = new IngredientsAdapter(getContext(),mIngredients);
         ingedientsView.setAdapter(adapter);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     public void setIngredients(ArrayList<Ingredient> ingredients)
