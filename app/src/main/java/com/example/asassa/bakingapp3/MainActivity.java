@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         }
         recipesRecycler.setLayoutManager(gridLayoutManager);
         recipesRecycler.setAdapter(adapter);
-        //gridLayoutManager.findFirstVisibleItemPosition();
+
     }
 
     @Override

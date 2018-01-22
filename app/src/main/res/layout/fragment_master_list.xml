@@ -6,22 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/tv_recipe_name"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="20sp"
-
-        tools:text="Recipe name"
-        />
-    <TextView
         android:id="@+id/tv_ingredients"
         android:text="Ingredients"
+        android:textStyle="bold"
+        android:textSize="@dimen/list_text_size"
+        android:textColor="@android:color/black"
+        android:layout_height="@dimen/list_item_height"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:paddingLeft="@dimen/ingredient_left_padding"
+        android:paddingRight="@dimen/ingredient_left_padding"
+        android:gravity="center_vertical"
         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_thickness"
+        android:background="@android:color/darker_gray"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/list_padding"
+        android:paddingBottom="@dimen/list_padding"
         android:id="@+id/rv_steps">
     </ListView>
 

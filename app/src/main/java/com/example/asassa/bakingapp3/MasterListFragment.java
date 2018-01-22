@@ -38,7 +38,6 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
     private OnStepClickListener onStepClickListener;
     private OnIngredientsClickListener onIngredienstClickListener;
     private TextView textViewIngredients;
-    private TextView textViewRecipeName;
 
 
     @Override
@@ -52,7 +51,6 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
         {
 
         }
-
     }
 
     @Nullable
@@ -60,8 +58,8 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_master_list,container);
         textViewIngredients = view.findViewById(R.id.tv_ingredients);
-        textViewRecipeName = view.findViewById(R.id.tv_recipe_name);
         Intent intent = getActivity().getIntent();
+
         if (intent!= null)
         {
             final Recipe recipe = intent.getExtras().getParcelable("recipe");
@@ -80,7 +78,6 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
                     onIngredienstClickListener.onIngerdientsClick(recipe.ingredients());
                 }
             });
-            textViewRecipeName.setText(recipe.name());
         }
 
         return view;

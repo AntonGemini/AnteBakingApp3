@@ -13,6 +13,12 @@
         android:name="com.example.asassa.bakingapp3.MasterListFragment"
         />
 
+    <View
+        android:layout_width="@dimen/divider_thickness"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        />
+
     <FrameLayout
         android:id="@+id/details_fragment"
         android:layout_width="match_parent"

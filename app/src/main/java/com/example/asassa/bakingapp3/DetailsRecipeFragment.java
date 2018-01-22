@@ -44,7 +44,6 @@ public class DetailsRecipeFragment extends Fragment {
         tv = view.findViewById(R.id.tv_step_description);
         exoPlayerView = view.findViewById(R.id.exo_details_video);
         defaultImageView = view.findViewById(R.id.iv_default_step);
-        textViewRecipe = view.findViewById(R.id.tv_recipe_name);
 
         Intent intent = getActivity().getIntent();
         if (savedInstanceState != null)

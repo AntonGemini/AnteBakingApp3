@@ -2,14 +2,17 @@ package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.asassa.bakingapp3.R;
 import com.example.asassa.bakingapp3.Utils.Step;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
 /**
  * Created by ASassa on 03.01.2018.
@@ -45,19 +48,17 @@ public class StepListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup parent) {
-        TextView textView;
+        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.step_item,parent,false);
+        TextView textView = rowView.findViewById(R.id.tv_step_name);
         if (view == null)
         {
-            textView = new TextView(mContext);
-
-            int dppx = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50, mContext.getResources().getDisplayMetrics());
-            textView.setMinHeight(dppx);
             Step step = mSteps.get(i);
             textView.setText(step.shortDescription());
         }
         else {
-            textView = (TextView)view;
+            rowView = view;
         }
-        return textView;
+        return rowView;
     }
 }

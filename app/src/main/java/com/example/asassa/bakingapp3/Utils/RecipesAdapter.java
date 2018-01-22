@@ -48,6 +48,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     public void onBindViewHolder(RecipesAdapter.RecipesHolder holder, int position) {
         Recipe recipe = mRecipeList.get(position);
         holder.recipeNameText.setText(recipe.name());
+        holder.servingsNameText.setText(mContext.getText(R.string.servings)+String.valueOf(recipe.servings()));
         String imgSrc = recipe.image();
         if (!imgSrc.equals(""))
         {
@@ -62,11 +63,15 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
 
     public class RecipesHolder extends RecyclerView.ViewHolder {
         public TextView recipeNameText;
+        public TextView servingsNameText;
         public ImageView recipeImageView;
+
         public RecipesHolder(View itemView) {
             super(itemView);
             recipeNameText = itemView.findViewById(R.id.recipe_name);
+            servingsNameText = itemView.findViewById(R.id.num_servings);
             recipeImageView = itemView.findViewById(R.id.iv_recipe);
+
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
