@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,7 +61,7 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
 
         if (intent!= null)
         {
-            final Recipe recipe = intent.getExtras().getParcelable("recipe");
+            final Recipe recipe = intent.getExtras().getParcelable(getString(R.string.recipe_parcel));
             ListView listView = view.findViewById(R.id.rv_steps);
             StepListAdapter stepList = new StepListAdapter(getContext(), recipe.steps());
             listView.setAdapter(stepList);

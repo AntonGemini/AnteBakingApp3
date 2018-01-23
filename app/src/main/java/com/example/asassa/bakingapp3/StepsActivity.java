@@ -1,14 +1,10 @@
 package com.example.asassa.bakingapp3;
 
 import android.content.Intent;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
+import android.view.MenuItem;
 
 import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
@@ -28,32 +24,45 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
-        Recipe recipe = null;
+        Recipe recipe;
         if (savedInstanceState == null)
         {
-            recipe = getIntent().getExtras().getParcelable("recipe");
+            recipe = getIntent().getExtras().getParcelable(getString(R.string.recipe_parcel));
             titleActionBar = recipe.name();
             getSupportActionBar().setTitle(titleActionBar);
         }
         else {
-            titleActionBar = savedInstanceState.getString("actionBarTitle");
+            titleActionBar = savedInstanceState.getString(getString(R.string.action_bar_title));
             getSupportActionBar().setTitle(titleActionBar);
+        }
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         if (findViewById(R.id.layout_two_pane)!=null)
         {
             mTwoPane = true;
             if (savedInstanceState==null) {
-                recipe = getIntent().getExtras().getParcelable("recipe");
+                recipe = getIntent().getExtras().getParcelable(getString(R.string.recipe_parcel));
                 DetailsRecipeFragment fragment = new DetailsRecipeFragment();
                 fragment.setStepDetails(recipe.steps().get(0));
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
             }
         }
+
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onStepClick(Step step) {
@@ -66,8 +75,8 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
         }
         else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("step", step);
-            intent.putExtra("actionBarTitle",titleActionBar);
+            intent.putExtra(getString(R.string.step_parcel), step);
+            intent.putExtra(getString(R.string.action_bar_title),titleActionBar);
             startActivity(intent);
         }
     }
@@ -83,7 +92,7 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
         }
         else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("ingedients",new ArrayList(ingredients));
+            intent.putExtra(getString(R.string.ingedients_parcel),new ArrayList(ingredients));
             intent.putExtra(getString(R.string.action_bar_title),titleActionBar);
             startActivity(intent);
         }
@@ -92,6 +101,6 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("actionBarTitle",titleActionBar);
+        outState.putString(getString(R.string.action_bar_title),titleActionBar);
     }
 }

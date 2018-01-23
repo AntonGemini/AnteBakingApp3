@@ -1,33 +1,24 @@
 package com.example.asassa.bakingapp3;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.util.ArraySet;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
+import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.Adapters.WidgetRecyclerAdapter;
-import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * The configuration screen for the {@link IngredientsWidget IngredientsWidget} AppWidget.
@@ -38,7 +29,8 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
     private static final String PREFS_NAME = "com.example.asassa.bakingapp3.IngredientsWidget";
     public static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    EditText mAppWidgetText;
+
+    TextView mAppWidgetTitle;
     RecyclerView mAppWidgetList;
     List<Recipe> mRecipes;
 
@@ -47,17 +39,6 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         super();
     }
 
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        String titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
-        if (titleValue != null) {
-            return titleValue;
-        } else {
-            return context.getString(R.string.appwidget_text);
-        }
-    }
 
     static void deleteTitlePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
@@ -72,10 +53,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         // Set the result to CANCELED.  This will cause the widget host to cancel
         // out of the widget placement if the user presses the back button.
         setResult(RESULT_CANCELED);
-
         setContentView(R.layout.ingredients_widget_configure);
-        //mAppWidgetText = findViewById(R.id.appwidget_text);
-
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -90,8 +68,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
             finish();
             return;
         }
-
-        mAppWidgetText.setText(loadTitlePref(IngredientsWidgetConfigureActivity.this, mAppWidgetId));
+        mAppWidgetTitle = findViewById(R.id.tv_widget_title);
         getSupportLoaderManager().initLoader(4,null,this);
     }
 

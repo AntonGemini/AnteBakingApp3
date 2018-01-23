@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">BakingApp3</string>
-    <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
-    <string name="add_widget">Add widget</string>
-    <string name="servings">Servings:</string>
     <string name="action_bar_title">actionBarTitle</string>
+    <string name="widget_conf_title">actionBarTitle</string>
+    <string name="recipes_json">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json</string>
+    <string name="step_parcel">step</string>
+    <string name="ingedients_parcel">ingedients</string>
+    <string name="recipe_parcel">recipe</string>
+    <string name="ingredient_lst">ing_lst</string>
+    <string name="first_visible">firstVisible</string>
+    <string name="recipe_image">Recipe image</string>
+    <string name="ingredients_title">Ingredients</string>
+    <string name="ingredients_item">%1$s\n%2$d %3$s</string>
+    <string name="servings_text">Servings: %1$d</string>
 </resources>

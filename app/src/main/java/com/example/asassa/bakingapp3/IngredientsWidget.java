@@ -5,9 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.widget.ArrayAdapter;
 import android.widget.RemoteViews;
 
 import com.example.asassa.bakingapp3.Utils.AutoValueGsonTypeAdapterFactory;
@@ -16,11 +14,7 @@ import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of App Widget functionality.
@@ -55,14 +49,14 @@ public class IngredientsWidget extends AppWidgetProvider {
             Intent intent = new Intent(context, IngredientWidgetService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
             intent.setType(String.valueOf(cnt));
-            intent.putStringArrayListExtra("lst",ings);
+            intent.putStringArrayListExtra(context.getString(R.string.ingredient_lst),ings);
 
             intent.putExtra("random",cnt);
             views.setTextViewText(R.id.appwidget_text,recipe.name());
             views.setRemoteAdapter(R.id.lv_widget_ingredients,intent);
 
             Intent recipeIntent = new Intent(context,StepsActivity.class);
-            recipeIntent.putExtra("recipe",recipe);
+            recipeIntent.putExtra(context.getString(R.string.recipe_parcel),recipe);
             PendingIntent pendingIntent = PendingIntent.getActivity(context,cnt,recipeIntent,PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.lv_widget_ingredients,pendingIntent);
             cnt++;

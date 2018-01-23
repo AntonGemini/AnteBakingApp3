@@ -1,22 +1,10 @@
 package com.example.asassa.bakingapp3.Utils;
 
-import android.util.JsonReader;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +22,7 @@ public class NetworkProvider {
     {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
-        String result = "";
+        String result;
         try {
             Response response = client.newCall(request).execute();
             result = response.body().string();
@@ -43,7 +31,7 @@ public class NetworkProvider {
         }
         catch(Exception ex)
         {
-            Log.d("OKHTTP","Error connecting server");
+            //Log.d("OKHTTP","Error connecting server");
         }
         return null;
 
@@ -54,13 +42,12 @@ public class NetworkProvider {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create())
                 .create();
         Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
-        List<Recipe> recipes = gson.fromJson(json,type);
-        return recipes;
+        return gson.fromJson(json,type);
         //Store list recipes first time in shared preferences.
     }
 
 
-    public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
+    /*public static List<Recipe> readRecipesArray(String jsonRecipes) throws IOException
     {
         //JSONObject jsonObject = JSONParser
         List<Recipe> recipes = new ArrayList<>();
@@ -185,7 +172,7 @@ public class NetworkProvider {
         //recipe.setSteps(stepList);
         reader.endArray();
         return stepList;
-    }
+    }*/
 
 
 

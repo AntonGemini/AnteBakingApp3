@@ -1,4 +1,4 @@
-package com.example.asassa.bakingapp3.Utils;
+package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.R;
+import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
     public void onBindViewHolder(RecipesAdapter.RecipesHolder holder, int position) {
         Recipe recipe = mRecipeList.get(position);
         holder.recipeNameText.setText(recipe.name());
-        holder.servingsNameText.setText(mContext.getText(R.string.servings)+String.valueOf(recipe.servings()));
+        holder.servingsNameText.setText(mContext.getString(R.string.servings_text,recipe.servings()));
         String imgSrc = recipe.image();
         if (!imgSrc.equals(""))
         {

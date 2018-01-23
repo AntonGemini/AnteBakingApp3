@@ -1,12 +1,10 @@
 package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.R;
@@ -54,9 +52,8 @@ public class IngredientsAdapter extends BaseAdapter {
         TextView textView = rowView.findViewById(R.id.tv_step_name);
         if (view == null)
         {
-            textView.setText(mIngredients.get(i).ingredient()+"\n");
-            textView.append(mIngredients.get(i).quantity()+" ");
-            textView.append(mIngredients.get(i).measure());
+            textView.setText(mContext.getString(R.string.ingredients_item,mIngredients.get(i).ingredient(),
+                    mIngredients.get(i).quantity(),mIngredients.get(i).measure()));
         }
         else
         {

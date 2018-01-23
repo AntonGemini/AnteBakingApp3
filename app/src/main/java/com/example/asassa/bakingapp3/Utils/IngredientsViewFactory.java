@@ -8,7 +8,6 @@ import android.widget.RemoteViewsService;
 import com.example.asassa.bakingapp3.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ASassa on 16.01.2018.

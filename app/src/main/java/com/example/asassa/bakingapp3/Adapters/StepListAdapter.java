@@ -1,7 +1,6 @@
 package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.example.asassa.bakingapp3.R;
 import com.example.asassa.bakingapp3.Utils.Step;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by ASassa on 03.01.2018.

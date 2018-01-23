@@ -1,6 +1,7 @@
 package com.example.asassa.bakingapp3;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +18,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
@@ -31,11 +31,11 @@ import com.google.android.exoplayer2.util.Util;
 public class DetailsRecipeFragment extends Fragment {
 
     private Step mStep = null;
-    TextView tv;
-    SimpleExoPlayerView exoPlayerView;
-    SimpleExoPlayer mExoPlayer;
-    ImageView defaultImageView;
-    TextView textViewRecipe;
+    private TextView tv;
+    private SimpleExoPlayerView exoPlayerView;
+    private SimpleExoPlayer mExoPlayer;
+    private ImageView defaultImageView;
+
 
     @Nullable
     @Override
@@ -48,10 +48,10 @@ public class DetailsRecipeFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         if (savedInstanceState != null)
         {
-            mStep = savedInstanceState.getParcelable("step");
+            mStep = savedInstanceState.getParcelable(getString(R.string.step_parcel));
         }
         else if (intent != null && mStep == null) {
-            mStep = intent.getExtras().getParcelable("step");
+            mStep = intent.getExtras().getParcelable(getString(R.string.step_parcel));
         }
         String ts = mStep.description();
         tv.setText(ts);
@@ -68,7 +68,7 @@ public class DetailsRecipeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("step",mStep);
+        outState.putParcelable(getString(R.string.step_parcel),mStep);
     }
 
     public void setStepDetails(Step step)
@@ -76,14 +76,18 @@ public class DetailsRecipeFragment extends Fragment {
         mStep = step;
     }
 
-    public void intializePlayer(String videoUrl)
+    private void intializePlayer(String videoUrl)
     {
         exoPlayerView.setVisibility(View.VISIBLE);
 
         if (mExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-            String userAgent = Util.getUserAgent(getActivity(), "AnteBakingApp3");
+            ApplicationInfo applicationInfo = getContext().getApplicationInfo();
+            int stringId = applicationInfo.labelRes;
+            String applicationName = stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : getContext().getString(stringId);
+
+            String userAgent = Util.getUserAgent(getActivity(), applicationName);
             MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(videoUrl), new
                     DefaultDataSourceFactory(getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             exoPlayerView.setPlayer(mExoPlayer);
@@ -108,7 +112,7 @@ public class DetailsRecipeFragment extends Fragment {
         releasePlayer();
     }
 
-    public void releasePlayer()
+    private void releasePlayer()
     {
         if (mExoPlayer != null)
         {

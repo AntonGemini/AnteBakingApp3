@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.asassa.bakingapp3.R;
-import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 
 import java.util.List;

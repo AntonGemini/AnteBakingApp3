@@ -3,6 +3,8 @@ package com.example.asassa.bakingapp3.Utils;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.example.asassa.bakingapp3.R;
+
 import java.util.List;
 
 /**
@@ -11,9 +13,11 @@ import java.util.List;
 
 public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
 
+    private Context mContext;
 
     public RecipesLoader(Context context) {
         super(context);
+        mContext = context;
     }
 
     @Override
@@ -24,7 +28,6 @@ public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
 
     @Override
     public List<Recipe> loadInBackground() {
-        List<Recipe> recipes = NetworkProvider.getRecipesJSON("https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json");
-        return recipes;
+        return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
     }
 }

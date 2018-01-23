@@ -1,10 +1,8 @@
 package com.example.asassa.bakingapp3;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -18,10 +16,10 @@ public class DetailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             actionBarTitle = getIntent().getExtras().getString(getString(R.string.action_bar_title));
             getSupportActionBar().setTitle(actionBarTitle);
-            if (getIntent().getExtras().getParcelable("step") != null) {
+            if (getIntent().getExtras().getParcelable(getString(R.string.step_parcel)) != null) {
                 DetailsRecipeFragment fragment = new DetailsRecipeFragment();
                 fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
-            } else if (getIntent().getExtras().getParcelableArrayList("ingedients") != null) {
+            } else if (getIntent().getExtras().getParcelableArrayList(getString(R.string.ingedients_parcel)) != null) {
                 IngredientFragment fragment = new IngredientFragment();
                 fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
             }
@@ -31,6 +29,12 @@ public class DetailActivity extends AppCompatActivity {
             actionBarTitle = savedInstanceState.getString(getString(R.string.action_bar_title));
             getSupportActionBar().setTitle(actionBarTitle);
         }
+
+        if (getSupportActionBar()!=null)
+        {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
 
@@ -38,5 +42,14 @@ public class DetailActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(getString(R.string.action_bar_title), actionBarTitle);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+        {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
