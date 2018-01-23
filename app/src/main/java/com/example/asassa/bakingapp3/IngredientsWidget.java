@@ -45,8 +45,6 @@ public class IngredientsWidget extends AppWidgetProvider {
 
 
         if (recipe != null) {
-
-
 //
             ArrayList<String> ings = new ArrayList<>();
             for(Ingredient ing : recipe.ingredients())
@@ -60,6 +58,7 @@ public class IngredientsWidget extends AppWidgetProvider {
             intent.putStringArrayListExtra("lst",ings);
 
             intent.putExtra("random",cnt);
+            views.setTextViewText(R.id.appwidget_text,recipe.name());
             views.setRemoteAdapter(R.id.lv_widget_ingredients,intent);
 
             Intent recipeIntent = new Intent(context,StepsActivity.class);

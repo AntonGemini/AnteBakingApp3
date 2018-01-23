@@ -43,36 +43,8 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
     List<Recipe> mRecipes;
 
 
-    View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            final Context context = IngredientsWidgetConfigureActivity.this;
-
-            // When the button is clicked, store the string locally
-            String widgetText = mAppWidgetText.getText().toString();
-            saveTitlePref(context, mAppWidgetId, widgetText);
-
-            // It is the responsibility of the configuration activity to update the app widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            IngredientsWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
-
-
-            // Make sure we pass back the original appWidgetId
-            Intent resultValue = new Intent();
-            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
-        }
-    };
-
     public IngredientsWidgetConfigureActivity() {
         super();
-    }
-
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveTitlePref(Context context, int appWidgetId, String text) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
-        prefs.apply();
     }
 
     // Read the prefix from the SharedPreferences object for this widget.
@@ -102,9 +74,8 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.ingredients_widget_configure);
-        mAppWidgetText = findViewById(R.id.appwidget_text);
+        //mAppWidgetText = findViewById(R.id.appwidget_text);
 
-        findViewById(R.id.add_button).setOnClickListener(mOnClickListener);
 
         // Find the widget id from the intent.
         Intent intent = getIntent();
@@ -140,7 +111,6 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
 
         WidgetRecyclerAdapter adapter = new WidgetRecyclerAdapter(getBaseContext(),data, this);
         mAppWidgetList.setAdapter(adapter);
-
     }
 
     @Override
@@ -164,9 +134,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         Gson gson = new Gson();
         String recipeJson = gson.toJson(recipe);
-
-
-        sharedPreferences.edit().putString(PREF_PREFIX_KEY + " " + mAppWidgetId,recipeJson).commit();
+        sharedPreferences.edit().putString(PREF_PREFIX_KEY + " " + mAppWidgetId,recipeJson).apply();
     }
 }
 

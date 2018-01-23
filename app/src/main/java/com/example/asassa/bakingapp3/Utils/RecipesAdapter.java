@@ -21,7 +21,6 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
 
     Context mContext;
     List<Recipe> mRecipeList = null;
-    Recipe recipe1;
 
 
     public interface OnRecipeClickListener

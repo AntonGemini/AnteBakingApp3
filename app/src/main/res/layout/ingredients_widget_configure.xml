@@ -11,20 +11,15 @@
         android:layout_marginBottom="8dp"
         android:text="@string/configure" />
 
-    <EditText
-        android:id="@+id/appwidget_text"
+    <TextView
+        android:id="@+id/tv_widget_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/add_widget" />
+        style="@style/AppFontStyle"
+        android:text="Choose recipe" />
 
     <android.support.v7.widget.RecyclerView
+        android:paddingTop="@dimen/list_padding"
         android:id="@+id/lv_widget_recipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
