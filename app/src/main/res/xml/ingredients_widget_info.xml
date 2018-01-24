@@ -5,6 +5,6 @@
     android:initialLayout="@layout/ingredients_widget"
     android:minHeight="160dp"
     android:minWidth="140dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:previewImage="@drawable/recipe_image_small"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000" />

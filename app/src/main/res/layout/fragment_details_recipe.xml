@@ -20,7 +20,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="invisible"
-        android:src="@drawable/big_sap"
+        android:src="@drawable/img_placeholder"
         />
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView

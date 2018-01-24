@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import android.support.v4.app.TaskStackBuilder;
 
 /**
  * Implementation of App Widget functionality.
@@ -51,13 +52,15 @@ public class IngredientsWidget extends AppWidgetProvider {
             intent.setType(String.valueOf(cnt));
             intent.putStringArrayListExtra(context.getString(R.string.ingredient_lst),ings);
 
-            intent.putExtra("random",cnt);
             views.setTextViewText(R.id.appwidget_text,recipe.name());
             views.setRemoteAdapter(R.id.lv_widget_ingredients,intent);
 
             Intent recipeIntent = new Intent(context,StepsActivity.class);
+            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+            taskStackBuilder.addParentStack(StepsActivity.class);
+            taskStackBuilder.addNextIntent(recipeIntent);
             recipeIntent.putExtra(context.getString(R.string.recipe_parcel),recipe);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context,cnt,recipeIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(cnt,PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.lv_widget_ingredients,pendingIntent);
             cnt++;
         }

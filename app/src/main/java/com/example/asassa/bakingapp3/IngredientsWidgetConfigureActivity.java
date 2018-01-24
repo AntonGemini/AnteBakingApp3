@@ -30,7 +30,6 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
     public static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    TextView mAppWidgetTitle;
     RecyclerView mAppWidgetList;
     List<Recipe> mRecipes;
 
@@ -68,7 +67,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
             finish();
             return;
         }
-        mAppWidgetTitle = findViewById(R.id.tv_widget_title);
+
         getSupportLoaderManager().initLoader(4,null,this);
     }
 

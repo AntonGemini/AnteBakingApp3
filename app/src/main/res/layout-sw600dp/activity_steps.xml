@@ -10,16 +10,18 @@
         android:layout_width="@dimen/twopane_steps_list"
         android:id="@+id/step_list_fragment"
         android:name="com.example.asassa.bakingapp3.MasterListFragment"
+        android:layout_marginRight="1dp"
         />
 
     <View
-        android:layout_width="@dimen/divider_thickness"
+        android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
         />
 
     <FrameLayout
         android:id="@+id/details_fragment"
+        android:layout_marginLeft="1dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

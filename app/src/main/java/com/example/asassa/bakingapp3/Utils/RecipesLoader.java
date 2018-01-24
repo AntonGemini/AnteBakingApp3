@@ -14,6 +14,7 @@ import java.util.List;
 public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
 
     private Context mContext;
+    private List<Recipe> mResult;
 
     public RecipesLoader(Context context) {
         super(context);
@@ -23,11 +24,23 @@ public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
     @Override
     protected void onStartLoading() {
         super.onStartLoading();
-        forceLoad();
+        if (mResult!=null)
+        {
+            deliverResult(mResult);
+        }
+        else {
+            forceLoad();
+        }
     }
 
     @Override
     public List<Recipe> loadInBackground() {
         return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
+    }
+
+    @Override
+    public void deliverResult(List<Recipe> data) {
+        mResult = data;
+        super.deliverResult(data);
     }
 }
