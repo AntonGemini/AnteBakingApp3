@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class DetailsRecipeFragment extends Fragment {
     private SimpleExoPlayerView exoPlayerView;
     private SimpleExoPlayer mExoPlayer;
     private ImageView defaultImageView;
+    private long savedPlayerPosition = 0;
 
 
     @Nullable
@@ -49,26 +51,36 @@ public class DetailsRecipeFragment extends Fragment {
         if (savedInstanceState != null)
         {
             mStep = savedInstanceState.getParcelable(getString(R.string.step_parcel));
+            savedPlayerPosition = savedInstanceState.getLong(getString(R.string.last_player_position));
+
         }
         else if (intent != null && mStep == null) {
             mStep = intent.getExtras().getParcelable(getString(R.string.step_parcel));
         }
         String ts = mStep.description();
         tv.setText(ts);
-        if (mStep.videoURL() != null && !mStep.videoURL().equals("")) {
-            intializePlayer(mStep.videoURL());
-        }
-        else
-        {
-            setDefaultImage(mStep.thumbnailURL());
-        }
         return view;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        savedPlayerPosition = mExoPlayer.getCurrentPosition();
         outState.putParcelable(getString(R.string.step_parcel),mStep);
+        outState.putLong(getString(R.string.last_player_position),savedPlayerPosition);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!TextUtils.isEmpty(mStep.videoURL())) {
+            intializePlayer(mStep.videoURL());
+        }
+        else
+        {
+            setDefaultImage(mStep.thumbnailURL());
+        }
     }
 
     public void setStepDetails(Step step)
@@ -92,7 +104,11 @@ public class DetailsRecipeFragment extends Fragment {
                     DefaultDataSourceFactory(getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             exoPlayerView.setPlayer(mExoPlayer);
             mExoPlayer.prepare(mediaSource);
+
             mExoPlayer.setPlayWhenReady(true);
+        }
+        if (savedPlayerPosition > 0) {
+            mExoPlayer.seekTo(savedPlayerPosition);
         }
     }
 

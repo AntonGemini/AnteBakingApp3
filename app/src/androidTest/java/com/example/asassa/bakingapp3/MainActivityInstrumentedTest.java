@@ -63,7 +63,8 @@ public class MainActivityInstrumentedTest {
     {
         onView(ViewMatchers.withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class)))).check(matches(withText("Nutella Pie")));
-        onData(anything()).inAdapterView(withId(R.id.rv_steps)).atPosition(0).perform(click());
+        onView(ViewMatchers.withId(R.id.rv_steps)).perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+        //onData(anything()).inAdapterView(withId(R.id.rv_steps)).atPosition(0).perform(click());
         onView(allOf(withId(R.id.exo_details_video),withClassName(is(SimpleExoPlayerView.class.getName()))))
                 .check(new VideoViewAssertion());
     }

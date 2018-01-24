@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.example.asassa.bakingapp3.R;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +37,8 @@ public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
 
     @Override
     public List<Recipe> loadInBackground() {
-        return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
+        return NetworkProvider.deSerialize(mContext.getString(R.string.recipes_json),new TypeToken<ArrayList<Recipe>>() {}.getType());
+        //return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
     }
 
     @Override

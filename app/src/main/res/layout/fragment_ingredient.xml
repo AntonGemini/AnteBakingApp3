@@ -6,8 +6,8 @@
     android:id="@+id/ingredients_fragment"
     android:orientation="vertical">
 
-    <ListView
-            android:id="@+id/lv_ingredients"
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_ingredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

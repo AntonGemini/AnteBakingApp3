@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +27,16 @@ import java.util.List;
 
 public class MasterListFragment extends android.support.v4.app.Fragment {
 
-    public interface OnStepClickListener
-    {
-        void onStepClick(Step position);
-    }
+
+    private int firstVisible;
+    LinearLayoutManager linearLayoutManager;
 
     public interface OnIngredientsClickListener
     {
         void onIngerdientsClick(List<Ingredient> ingredients);
     }
 
-    private OnStepClickListener onStepClickListener;
+
     private OnIngredientsClickListener onIngredienstClickListener;
     private TextView textViewIngredients;
 
@@ -43,7 +45,6 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try{
-            onStepClickListener = (OnStepClickListener)context;
             onIngredienstClickListener = (OnIngredientsClickListener)context;
         }
         catch (Exception ex)
@@ -52,25 +53,30 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int visiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
+        outState.putInt(getString(R.string.first_visible),visiblePosition);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_master_list,container);
+        RecyclerView recyclerView = view.findViewById(R.id.rv_steps);
         textViewIngredients = view.findViewById(R.id.tv_ingredients);
         Intent intent = getActivity().getIntent();
 
         if (intent!= null)
         {
             final Recipe recipe = intent.getExtras().getParcelable(getString(R.string.recipe_parcel));
-            ListView listView = view.findViewById(R.id.rv_steps);
+
             StepListAdapter stepList = new StepListAdapter(getContext(), recipe.steps());
-            listView.setAdapter(stepList);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    onStepClickListener.onStepClick(recipe.steps().get(i));
-                }
-            });
+            linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(stepList);
+
             textViewIngredients.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -78,9 +84,11 @@ public class MasterListFragment extends android.support.v4.app.Fragment {
                 }
             });
         }
+        if (savedInstanceState != null) {
+            firstVisible = savedInstanceState.getInt(getString(R.string.first_visible), 0);
+            recyclerView.scrollToPosition(firstVisible);
+        }
 
         return view;
     }
-
-
 }

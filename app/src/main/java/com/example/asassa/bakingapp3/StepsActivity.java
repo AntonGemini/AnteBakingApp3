@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.asassa.bakingapp3.Adapters.StepListAdapter;
 import com.example.asassa.bakingapp3.Utils.Ingredient;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.Step;
@@ -13,10 +14,9 @@ import com.example.asassa.bakingapp3.Utils.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StepsActivity extends AppCompatActivity implements MasterListFragment.OnStepClickListener,
+public class StepsActivity extends AppCompatActivity implements StepListAdapter.OnStepClickListener,
         MasterListFragment.OnIngredientsClickListener {
 
-    boolean mTwoPane = false;
     String titleActionBar = "";
 
     @Override
@@ -41,9 +41,8 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if (findViewById(R.id.layout_two_pane)!=null)
+        if(getResources().getBoolean(R.bool.isTablet))
         {
-            mTwoPane = true;
             if (savedInstanceState==null) {
                 recipe = getIntent().getExtras().getParcelable(getString(R.string.recipe_parcel));
                 DetailsRecipeFragment fragment = new DetailsRecipeFragment();
@@ -52,7 +51,6 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
                 fragmentManager.beginTransaction().add(R.id.details_fragment, fragment).commit();
             }
         }
-
     }
 
     @Override
@@ -67,7 +65,7 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
     @Override
     public void onStepClick(Step step) {
 
-        if (mTwoPane)
+        if (getResources().getBoolean(R.bool.isTablet))
         {
             DetailsRecipeFragment fragment = new DetailsRecipeFragment();
             fragment.setStepDetails(step);
@@ -84,7 +82,7 @@ public class StepsActivity extends AppCompatActivity implements MasterListFragme
     @Override
     public void onIngerdientsClick(List<Ingredient> ingredients) {
 
-        if (mTwoPane)
+        if (getResources().getBoolean(R.bool.isTablet))
         {
             IngredientFragment fragment = new IngredientFragment();
             fragment.setIngredients(new ArrayList(ingredients));

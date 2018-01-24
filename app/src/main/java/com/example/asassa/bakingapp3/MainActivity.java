@@ -24,13 +24,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Recipe>>, RecipesAdapter.OnRecipeClickListener {
 
-    List<Recipe> mRecipes = null;
-    Context mContext = null;
+    List<Recipe> mRecipes;
+    Context mContext;
     private static int LOADER_ID = 1;
-    GridLayoutManager gridLayoutManager;
-    RecipesAdapter adapter;
-    private int firstVisible = 0;
-    RecyclerView recipesRecycler;
+    GridLayoutManager mGridLayoutManager;
+    int mFirstVisible = 0;
+    RecyclerView mRecipesRecycler;
 
     ActivityIdlingResource mIdlingResource;
 
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         mContext = this;
         if (savedInstanceState != null) {
-            firstVisible = savedInstanceState.getInt(getString(R.string.first_visible), 0);
+            mFirstVisible = savedInstanceState.getInt(getString(R.string.first_visible), 0);
         }
         getSupportLoaderManager().initLoader(LOADER_ID,null, this);
     }
@@ -62,9 +61,9 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
         mRecipes = data;
         loadRecipes(mRecipes);
-        if (firstVisible > 0)
+        if (mFirstVisible > 0)
         {
-            recipesRecycler.scrollToPosition(firstVisible);
+            mRecipesRecycler.scrollToPosition(mFirstVisible);
         }
 
         if(mIdlingResource != null){
@@ -80,26 +79,26 @@ public class MainActivity extends AppCompatActivity
 
     public void loadRecipes(List<Recipe> recipes)
     {
-        recipesRecycler = findViewById(R.id.rv_recipes);
-        adapter = new RecipesAdapter(this, recipes);
+        mRecipesRecycler = findViewById(R.id.rv_recipes);
+        RecipesAdapter adapter = new RecipesAdapter(this, recipes);
 
         int orientation = this.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+            mGridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         }
         else if (orientation == Configuration.ORIENTATION_LANDSCAPE)
         {
-            gridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
+            mGridLayoutManager = new GridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         }
-        recipesRecycler.setLayoutManager(gridLayoutManager);
-        recipesRecycler.setAdapter(adapter);
+        mRecipesRecycler.setLayoutManager(mGridLayoutManager);
+        mRecipesRecycler.setAdapter(adapter);
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        int visiblePosition = gridLayoutManager.findFirstVisibleItemPosition();
+        int visiblePosition = mGridLayoutManager.findFirstVisibleItemPosition();
         savedInstanceState.putInt(getString(R.string.first_visible),visiblePosition);
     }
 

@@ -1,6 +1,7 @@
 package com.example.asassa.bakingapp3.Adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,47 +17,58 @@ import java.util.List;
  * Created by ASassa on 03.01.2018.
  */
 
-public class StepListAdapter extends BaseAdapter {
+public class StepListAdapter extends RecyclerView.Adapter<StepListAdapter.StepHolder> {
 
     List<Step> mSteps = null;
 
     Context mContext;
 
+    public interface OnStepClickListener
+    {
+        void onStepClick(Step step);
+    }
+
+    private OnStepClickListener stepClickListener;
+
+
     public StepListAdapter(Context context, List<Step> steps)
     {
         mContext = context;
         mSteps = steps;
+        stepClickListener = (OnStepClickListener)context;
     }
 
     @Override
-    public int getCount() {
+    public StepHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View rowView = inflater.inflate(R.layout.step_item,parent,false);
+        return new StepHolder(rowView);
+    }
+
+    @Override
+    public void onBindViewHolder(StepHolder holder, int position) {
+        Step step = mSteps.get(position);
+        holder.textView.setText(step.shortDescription());
+    }
+
+    @Override
+    public int getItemCount() {
         if (mSteps != null) return mSteps.size();
         return 0;
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.step_item,parent,false);
-        TextView textView = rowView.findViewById(R.id.tv_step_name);
-        if (view == null)
-        {
-            Step step = mSteps.get(i);
-            textView.setText(step.shortDescription());
+    public class StepHolder extends RecyclerView.ViewHolder
+    {
+        TextView textView;
+        public StepHolder(View itemView) {
+            super(itemView);
+            textView = itemView.findViewById(R.id.tv_step_name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    stepClickListener.onStepClick(mSteps.get(getAdapterPosition()));
+                }
+            });
         }
-        else {
-            rowView = view;
-        }
-        return rowView;
     }
 }

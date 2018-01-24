@@ -43,5 +43,13 @@ public class NetworkProvider {
         return gson.fromJson(json,type);
     }
 
+    public static <T> T deSerialize(String json, Type type)
+    {
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create()).create();
+        return gson.fromJson(json,type);
+    }
+
+
+
 
 }

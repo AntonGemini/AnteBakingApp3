@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,25 +22,33 @@ import java.util.ArrayList;
 
 public class IngredientFragment extends Fragment {
 
-    private ListView ingedientsView;
+    private RecyclerView ingedientsView;
     private ArrayList<Ingredient> mIngredients;
+    private LinearLayoutManager layoutManager;
+    private int firstVisible;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient,container,false);
-        ingedientsView = view.findViewById(R.id.lv_ingredients);
+        ingedientsView = view.findViewById(R.id.rv_ingredients);
         Intent intent = getActivity().getIntent();
         if(savedInstanceState!= null)
         {
             mIngredients = savedInstanceState.getParcelableArrayList(getString(R.string.ingedients_parcel));
+            firstVisible = savedInstanceState.getInt(getString(R.string.first_visible), 0);
         }
         else if (mIngredients == null && intent.getExtras().getParcelableArrayList(getString(R.string.ingedients_parcel)) != null)
         {
             mIngredients = intent.getExtras().getParcelableArrayList(getString(R.string.ingedients_parcel));
         }
+
         IngredientsAdapter adapter = new IngredientsAdapter(getContext(),mIngredients);
+        layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,true);
+
+        ingedientsView.setLayoutManager(layoutManager);
         ingedientsView.setAdapter(adapter);
+        ingedientsView.scrollToPosition(firstVisible);
         return view;
     }
 
@@ -51,5 +61,7 @@ public class IngredientFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(getString(R.string.ingedients_parcel),mIngredients);
+        int visiblePosition = layoutManager.findFirstVisibleItemPosition();
+        outState.putInt(getString(R.string.first_visible),visiblePosition);
     }
 }
