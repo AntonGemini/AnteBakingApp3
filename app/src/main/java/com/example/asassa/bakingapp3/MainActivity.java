@@ -3,7 +3,9 @@ package com.example.asassa.bakingapp3;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
@@ -13,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.example.asassa.bakingapp3.Utils.ActivityIdlingResource;
+import com.example.asassa.bakingapp3.Utils.ConnectionReciever;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Adapters.RecipesAdapter;
 import com.example.asassa.bakingapp3.Utils.RecipesLoader;
@@ -22,7 +26,9 @@ import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Recipe>>, RecipesAdapter.OnRecipeClickListener {
+        implements LoaderManager.LoaderCallbacks<List<Recipe>>, ConnectionReciever.OnConnectionChangedReciever,
+        RecipesAdapter.OnRecipeClickListener   {
+
 
     List<Recipe> mRecipes;
     Context mContext;
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     GridLayoutManager mGridLayoutManager;
     int mFirstVisible = 0;
     RecyclerView mRecipesRecycler;
+    ConnectionReciever connectionReciever;
 
     ActivityIdlingResource mIdlingResource;
 
@@ -37,11 +44,34 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        connectionReciever = new ConnectionReciever(this);
+
         mContext = this;
         if (savedInstanceState != null) {
             mFirstVisible = savedInstanceState.getInt(getString(R.string.first_visible), 0);
         }
-        getSupportLoaderManager().initLoader(LOADER_ID,null, this);
+        if (ConnectionReciever.checkConnection(this)) {
+            getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        }
+        else
+        {
+            Toast.makeText(this,getString(R.string.error_connecting),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectionReciever,intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(connectionReciever);
     }
 
     @Override
@@ -59,14 +89,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
-        mRecipes = data;
-        loadRecipes(mRecipes);
-        if (mFirstVisible > 0)
-        {
-            mRecipesRecycler.scrollToPosition(mFirstVisible);
+        if (data!=null && data.size()>0) {
+            mRecipes = data;
+            loadRecipes(mRecipes);
+            if (mFirstVisible > 0) {
+                mRecipesRecycler.scrollToPosition(mFirstVisible);
+            }
         }
-
-        if(mIdlingResource != null){
+        if (mIdlingResource != null) {
             mIdlingResource.setIdleState(true);
         }
 
@@ -98,8 +128,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        int visiblePosition = mGridLayoutManager.findFirstVisibleItemPosition();
-        savedInstanceState.putInt(getString(R.string.first_visible),visiblePosition);
+        if (mGridLayoutManager!=null) {
+            int visiblePosition = mGridLayoutManager.findFirstVisibleItemPosition();
+            savedInstanceState.putInt(getString(R.string.first_visible), visiblePosition);
+        }
     }
 
     @Override
@@ -120,5 +152,16 @@ public class MainActivity extends AppCompatActivity
         return mIdlingResource;
     }
 
+
+    @Override
+    public void onConnectionChanged(boolean isConnected) {
+        if (isConnected)
+        {
+            Toast.makeText(this, getString(R.string.connection_ok), Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(this, getString(R.string.error_connecting), Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

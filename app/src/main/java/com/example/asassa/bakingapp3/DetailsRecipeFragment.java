@@ -37,6 +37,7 @@ public class DetailsRecipeFragment extends Fragment {
     private SimpleExoPlayer mExoPlayer;
     private ImageView defaultImageView;
     private long savedPlayerPosition = 0;
+    private boolean mPlayerState = true;
 
 
     @Nullable
@@ -52,6 +53,7 @@ public class DetailsRecipeFragment extends Fragment {
         {
             mStep = savedInstanceState.getParcelable(getString(R.string.step_parcel));
             savedPlayerPosition = savedInstanceState.getLong(getString(R.string.last_player_position));
+            mPlayerState = savedInstanceState.getBoolean(getString(R.string.player_state));
 
         }
         else if (intent != null && mStep == null) {
@@ -65,10 +67,12 @@ public class DetailsRecipeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        savedPlayerPosition = mExoPlayer.getCurrentPosition();
-        outState.putParcelable(getString(R.string.step_parcel),mStep);
-        outState.putLong(getString(R.string.last_player_position),savedPlayerPosition);
-
+        outState.putParcelable(getString(R.string.step_parcel), mStep);
+        if (mExoPlayer!= null) {
+            savedPlayerPosition = mExoPlayer.getCurrentPosition();
+            outState.putLong(getString(R.string.last_player_position), savedPlayerPosition);
+            outState.putBoolean(getString(R.string.player_state),mPlayerState);
+        }
     }
 
     @Override
@@ -105,7 +109,7 @@ public class DetailsRecipeFragment extends Fragment {
             exoPlayerView.setPlayer(mExoPlayer);
             mExoPlayer.prepare(mediaSource);
 
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(mPlayerState);
         }
         if (savedPlayerPosition > 0) {
             mExoPlayer.seekTo(savedPlayerPosition);
@@ -119,6 +123,15 @@ public class DetailsRecipeFragment extends Fragment {
         if(!thumbnail.equals(""))
         {
             defaultImageView.setImageURI(Uri.parse(thumbnail));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mExoPlayer!= null)
+        {
+            mPlayerState = mExoPlayer.getPlayWhenReady();
         }
     }
 

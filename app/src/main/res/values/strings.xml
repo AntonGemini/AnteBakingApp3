@@ -14,4 +14,7 @@
     <string name="ingredients_item">%1$s\n%2$f %3$s</string>
     <string name="servings_text">Servings: %1$d</string>
     <string name="last_player_position">playerPosition</string>
+    <string name="player_state">playerState</string>
+    <string name="error_connecting">No internet connection</string>
+    <string name="connection_ok">Connected to internet</string>
 </resources>
