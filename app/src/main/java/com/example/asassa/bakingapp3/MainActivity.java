@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity
         if (isConnected)
         {
             Toast.makeText(this, getString(R.string.connection_ok), Toast.LENGTH_LONG).show();
+            if (mRecipes==null) {
+                getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+            }
         }
         else {
             Toast.makeText(this, getString(R.string.error_connecting), Toast.LENGTH_LONG).show();

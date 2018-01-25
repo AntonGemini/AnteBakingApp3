@@ -12,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.asassa.bakingapp3.Adapters.WidgetRecyclerAdapter;
+import com.example.asassa.bakingapp3.Utils.ConnectionReciever;
 import com.example.asassa.bakingapp3.Utils.Recipe;
 import com.example.asassa.bakingapp3.Utils.RecipesLoader;
 import com.google.gson.Gson;
@@ -28,6 +30,7 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
 
     private static final String PREFS_NAME = "com.example.asassa.bakingapp3.IngredientsWidget";
     public static final String PREF_PREFIX_KEY = "appwidget_";
+    private static final int LOADER_ID = 4;
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     RecyclerView mAppWidgetList;
@@ -68,7 +71,14 @@ public class IngredientsWidgetConfigureActivity extends AppCompatActivity
             return;
         }
 
-        getSupportLoaderManager().initLoader(4,null,this);
+        if (ConnectionReciever.checkConnection(this)) {
+            getSupportLoaderManager().initLoader(LOADER_ID,null,this);
+        }
+        else
+        {
+            Toast.makeText(this,getString(R.string.error_connecting),Toast.LENGTH_LONG).show();
+        }
+
     }
 
 
