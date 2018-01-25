@@ -37,8 +37,8 @@ public class RecipesLoader extends AsyncTaskLoader<List<Recipe>> {
 
     @Override
     public List<Recipe> loadInBackground() {
-        return NetworkProvider.deSerialize(mContext.getString(R.string.recipes_json),new TypeToken<ArrayList<Recipe>>() {}.getType());
-        //return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
+        //return NetworkProvider.deSerialize(mContext.getString(R.string.recipes_json),new TypeToken<ArrayList<Recipe>>() {}.getType());
+        return NetworkProvider.getRecipesJSON(mContext.getString(R.string.recipes_json));
     }
 
     @Override

@@ -20,6 +20,7 @@ public class NetworkProvider {
 
     public static List<Recipe> getRecipesJSON(String url)
     {
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         String result;
@@ -42,14 +43,6 @@ public class NetworkProvider {
         Type type = new TypeToken<ArrayList<Recipe>>() {}.getType();
         return gson.fromJson(json,type);
     }
-
-    public static <T> T deSerialize(String json, Type type)
-    {
-        Gson gson = new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create()).create();
-        return gson.fromJson(json,type);
-    }
-
-
 
 
 }
